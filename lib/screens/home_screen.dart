@@ -178,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   side: const BorderSide(color: AppColors.stroke),
                   labelStyle: TextStyle(
                     fontSize: 12,
-                    color: active ? Colors.white : AppColors.textSecondary,
+                    color: active ? Colors.black : AppColors.textSecondary,
                     fontWeight: FontWeight.w500,
                   ),
                 );

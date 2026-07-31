@@ -67,7 +67,7 @@ class AppTheme {
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: AppColors.violet,
-        foregroundColor: Colors.white,
+        foregroundColor: Colors.black,
       ),
       cardTheme: CardThemeData(
         color: AppColors.surface,

@@ -164,7 +164,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                   side: const BorderSide(color: AppColors.stroke),
                   labelStyle: TextStyle(
                     fontSize: 12,
-                    color: selected ? Colors.white : AppColors.textSecondary,
+                    color: selected ? Colors.black : AppColors.textSecondary,
                     fontWeight: FontWeight.w500,
                   ),
                 );
