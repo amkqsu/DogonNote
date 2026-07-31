@@ -93,7 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => NoteEditorScreen(repository: _repo, initialContent: text),
+        builder: (_) =>
+            NoteEditorScreen(repository: _repo, initialContent: text),
       ),
     );
     _refresh();
@@ -113,7 +114,9 @@ class _HomeScreenState extends State<HomeScreen> {
         title: RichText(
           text: const TextSpan(
             style: TextStyle(
-                fontSize: 21, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+                fontSize: 21,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary),
             children: [
               TextSpan(text: 'Dogon'),
               TextSpan(text: 'Note', style: TextStyle(color: AppColors.violet)),
@@ -128,9 +131,10 @@ class _HomeScreenState extends State<HomeScreen> {
             child: TextField(
               controller: _searchCtrl,
               onSubmitted: _runSemanticSearch,
-              style: const TextStyle(fontSize: 13.5, color: AppColors.textPrimary),
+              style:
+                  const TextStyle(fontSize: 13.5, color: AppColors.textPrimary),
               decoration: InputDecoration(
-                hintText: "İçeriğe göre ara: 'kira ödemesi'...",
+                hintText: "İçeriğe göre ara: 'Hosting ödemesi'...",
                 prefixIcon: const Icon(Icons.search_rounded,
                     color: AppColors.violet, size: 20),
                 suffixIcon: _searching
@@ -143,45 +147,33 @@ class _HomeScreenState extends State<HomeScreen> {
                               strokeWidth: 2, color: AppColors.violet),
                         ),
                       )
-                    : Container(
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: AppColors.violetDim,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const Text('AI',
-                            style: TextStyle(
-                                fontSize: 9.5,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white)),
-                      ),
+                    : null,
               ),
             ),
           ),
           SizedBox(
-            height: 46,
+            height: 52,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.fromLTRB(20, 14, 20, 4),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               itemCount: _chips.length,
               separatorBuilder: (_, __) => const SizedBox(width: 8),
               itemBuilder: (_, i) {
                 final chip = _chips[i];
                 final active = chip == _activeChip;
-                return Center(
-                  child: ChoiceChip(
+                return ChoiceChip(
                   label: Text(chip == 'Tümü' ? chip : '✦ $chip'),
                   selected: active,
                   onSelected: (_) => setState(() => _activeChip = chip),
                   selectedColor: AppColors.violet,
                   backgroundColor: AppColors.surface,
                   side: const BorderSide(color: AppColors.stroke),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  visualDensity: VisualDensity.compact,
                   labelStyle: TextStyle(
                     fontSize: 12,
                     color: active ? Colors.black : AppColors.textSecondary,
                     fontWeight: FontWeight.w500,
-                  ),
                   ),
                 );
               },
