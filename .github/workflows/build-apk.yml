@@ -31,7 +31,7 @@ jobs:
         run: flutter pub run flutter_native_splash:create
 
       - name: Build APK (release)
-        run: flutter build apk --release
+        run: flutter build apk --release --dart-define=GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
