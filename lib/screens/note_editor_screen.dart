@@ -173,7 +173,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
             const SizedBox(height: 16),
             FilledButton(
               style: FilledButton.styleFrom(
-                backgroundColor: AppColors.violet,
+                backgroundColor: AppColors.violet, foregroundColor: Colors.black,
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
               onPressed: _saving ? null : _saveNote,
