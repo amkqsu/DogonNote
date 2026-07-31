@@ -8,9 +8,9 @@ class AppColors {
   static const surface = Color(0xFF151517);
   static const elevated = Color(0xFF1D1D21);
   static const stroke = Color(0xFF28282D);
-  static const violet = Color(0xFF9B6BFF);
-  static const violetDim = Color(0xFF4A2E85);
-  static const violetGlow = Color(0x599B6BFF);
+  static const violet = Color(0xFFFFFFFF);
+  static const violetDim = Color(0xFF2A2A2E);
+  static const violetGlow = Color(0x55FFFFFF);
   static const textPrimary = Color(0xFFEDEDF0);
   static const textSecondary = Color(0xFF8B8B94);
   static const textTertiary = Color(0xFF5C5C63);
