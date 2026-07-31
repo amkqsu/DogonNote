@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onSubmitted: _runSemanticSearch,
               style: const TextStyle(fontSize: 13.5, color: AppColors.textPrimary),
               decoration: InputDecoration(
-                hintText: "Anlamına göre ara: 'kira ödemesi'...",
+                hintText: "İçeriğe göre ara: 'kira ödemesi'...",
                 prefixIcon: const Icon(Icons.search_rounded,
                     color: AppColors.violet, size: 20),
                 suffixIcon: _searching
@@ -154,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: TextStyle(
                                 fontSize: 9.5,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFFC9B3FF))),
+                                color: Colors.white)),
                       ),
               ),
             ),
@@ -169,7 +169,8 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (_, i) {
                 final chip = _chips[i];
                 final active = chip == _activeChip;
-                return ChoiceChip(
+                return Center(
+                  child: ChoiceChip(
                   label: Text(chip == 'Tümü' ? chip : '✦ $chip'),
                   selected: active,
                   onSelected: (_) => setState(() => _activeChip = chip),
@@ -180,6 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontSize: 12,
                     color: active ? Colors.black : AppColors.textSecondary,
                     fontWeight: FontWeight.w500,
+                  ),
                   ),
                 );
               },

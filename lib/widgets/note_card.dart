@@ -110,7 +110,7 @@ class NoteCard extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFFC9B3FF),
+                        color: Colors.white,
                       ),
                     ),
                   ),
