@@ -9,23 +9,43 @@ import '../theme/app_theme.dart';
 class NoteEditorScreen extends StatefulWidget {
   final NotesRepository repository;
   final Note? existing;
+  final String? initialContent;
 
-  const NoteEditorScreen({super.key, required this.repository, this.existing});
+  const NoteEditorScreen({
+    super.key,
+    required this.repository,
+    this.existing,
+    this.initialContent,
+  });
 
   @override
   State<NoteEditorScreen> createState() => _NoteEditorScreenState();
 }
 
 class _NoteEditorScreenState extends State<NoteEditorScreen> {
+  static const List<String> _categories = [
+    'İş',
+    'Fikir',
+    'Kişisel',
+    'Alışveriş',
+    'Sağlık',
+    'Eğitim',
+    'Diğer',
+  ];
+
   late final TextEditingController _titleCtrl;
   late final TextEditingController _contentCtrl;
+  late String _selectedCategory;
   bool _saving = false;
 
   @override
   void initState() {
     super.initState();
     _titleCtrl = TextEditingController(text: widget.existing?.title ?? '');
-    _contentCtrl = TextEditingController(text: widget.existing?.content ?? '');
+    _contentCtrl = TextEditingController(
+      text: widget.existing?.content ?? widget.initialContent ?? '',
+    );
+    _selectedCategory = widget.existing?.aiCategory ?? 'Diğer';
   }
 
   @override
@@ -37,11 +57,16 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
 
   Future<void> _pasteFromClipboard() async {
     final data = await Clipboard.getData('text/plain');
-    if (data?.text != null) {
+    if (data?.text != null && data!.text!.isNotEmpty) {
       setState(() {
-        _contentCtrl.text =
-            _contentCtrl.text.isEmpty ? data!.text! : '${_contentCtrl.text}\n${data!.text!}';
+        _contentCtrl.text = _contentCtrl.text.isEmpty
+            ? data.text!
+            : '${_contentCtrl.text}\n${data.text!}';
       });
+    } else if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Pano boş görünüyor')),
+      );
     }
   }
 
@@ -53,14 +78,10 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
     setState(() => _saving = true);
 
     String? summary;
-    String? category;
     try {
       final result = await GeminiService.summarizeAndCategorize(_contentCtrl.text);
       summary = result.summary;
-      category = result.category;
-    } catch (_) {
-      // AI çağrısı başarısız olursa (internet yok / hata) not yine de kaydedilir.
-    }
+    } catch (_) {}
 
     final note = widget.existing ??
         Note(
@@ -77,7 +98,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
           : _titleCtrl.text
       ..content = _contentCtrl.text
       ..aiSummary = summary ?? note.aiSummary
-      ..aiCategory = category ?? note.aiCategory
+      ..aiCategory = _selectedCategory
       ..updatedAt = DateTime.now();
 
     await widget.repository.save(note);
@@ -124,6 +145,32 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
               ),
             ),
             const SizedBox(height: 12),
+            const Text(
+              'Kategori',
+              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: _categories.map((cat) {
+                final selected = cat == _selectedCategory;
+                return ChoiceChip(
+                  label: Text(cat),
+                  selected: selected,
+                  onSelected: (_) => setState(() => _selectedCategory = cat),
+                  selectedColor: AppColors.violet,
+                  backgroundColor: AppColors.surface,
+                  side: const BorderSide(color: AppColors.stroke),
+                  labelStyle: TextStyle(
+                    fontSize: 12,
+                    color: selected ? Colors.white : AppColors.textSecondary,
+                    fontWeight: FontWeight.w500,
+                  ),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 16),
             FilledButton(
               style: FilledButton.styleFrom(
                 backgroundColor: AppColors.violet,
@@ -136,7 +183,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                       height: 18,
                       child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                     )
-                  : const Text('Kaydet (AI ile etiketle)'),
+                  : const Text('Kaydet'),
             ),
           ],
         ),

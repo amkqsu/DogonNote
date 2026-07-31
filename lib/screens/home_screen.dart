@@ -81,18 +81,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _pasteAndCreate() async {
     final data = await Clipboard.getData('text/plain');
+    final text = data?.text;
+    if (text == null || text.trim().isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Pano boş görünüyor')),
+        );
+      }
+      return;
+    }
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => NoteEditorScreen(repository: _repo),
+        builder: (_) => NoteEditorScreen(repository: _repo, initialContent: text),
       ),
     );
     _refresh();
-    if (data == null && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Pano boş görünüyor')),
-      );
-    }
   }
 
   @override
